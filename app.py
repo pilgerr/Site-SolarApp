@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/graphs'
 
+# Certifique-se de que o diretório para salvar gráficos existe
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
 # Constantes
 k = 1.38e-23
 q = 1.602e-19
@@ -21,7 +24,7 @@ G = 800
 
 def corrente_fotovoltaica(V, Icc, Kt, G, G_ref, T, Tc):
     Iph = ((Icc / G_ref) * G) * (1 + Kt * (T - Tc))
-    Is = Isr * (T / Tc) ** (3 / n) * np.exp((-(q * Vg) / n * k) * ((1 / T) - (1 / Tc)))
+    Is = Isr * (T / Tc) ** (3 / n) * np.exp((-(q * Vg) / (n * k)) * ((1 / T) - (1 / Tc)))
     I = Iph - Is * np.exp(((q * V) / (n * k * T)) - 1)
     return I
 
@@ -35,7 +38,7 @@ def generate_graphs():
     Kt = float(request.form['kt'])
     V_values = np.linspace(0, 0.8, 100)
 
-    # Gráficos
+    # Lista para armazenar os caminhos dos gráficos gerados
     graph_paths = []
 
     # I-V variando a temperatura
@@ -89,7 +92,7 @@ def generate_graphs():
     for Irra in G_var:
         I_values = [corrente_fotovoltaica(V, Icc, Kt, Irra, G_ref, Tc, Tc) for V in V_values]
         P_values = V_values * I_values
-        plt.plot(V_values, P_values, label=f'T = {Irra:.0f} W/m²')
+        plt.plot(V_values, P_values, label=f'G = {Irra:.0f} W/m²')
     plt.title("Curvas P-V variando a irradiação")
     plt.xlabel("Tensão (V)")
     plt.ylabel("Potência (W)")
@@ -107,5 +110,4 @@ def send_graph(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
-    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
     app.run(debug=True)
