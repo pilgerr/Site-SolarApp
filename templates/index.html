@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar App</title>
+</head>
+<body>
+    <h1>Simulação de Gráficos Fotovoltaicos</h1>
+    <form method="POST" action="/generate_graphs">
+        <label for="icc">Corrente de Curto-Circuito (Icc):</label>
+        <input type="text" id="icc" name="icc" required><br><br>
+
+        <label for="kt">Coeficiente de Temperatura (Kt):</label>
+        <input type="text" id="kt" name="kt" required><br><br>
+
+        <button type="submit">Gerar Gráficos</button>
+    </form>
+
+    <h2>Gráficos Gerados</h2>
+    {% if graph_paths %}
+        {% for path in graph_paths %}
+            <img src="{{ path }}" alt="Graph" style="width: 100%; max-width: 600px; margin-top: 20px;">
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
