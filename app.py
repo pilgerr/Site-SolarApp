@@ -36,7 +36,7 @@ def index():
 def generate_graphs():
     Icc = float(request.form['icc'])
     Kt = float(request.form['kt'])
-    V_values = np.linspace(0, 0.8, 100)
+    V_values = np.linspace(0, 0.8, 120)
 
     # Lista para armazenar os caminhos dos gráficos gerados
     graph_paths = []
