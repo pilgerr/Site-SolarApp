@@ -36,7 +36,7 @@ def index():
 def generate_graphs():
     Icc = float(request.form['icc'])
     Kt = float(request.form['kt'])
-    V_values = np.linspace(0, 0.8, 100)
+    V_values = np.linspace(0, 1.2, 100)
 
     # Lista para armazenar os caminhos dos gráficos gerados
     graph_paths = []
@@ -51,7 +51,6 @@ def generate_graphs():
     plt.ylabel("Corrente (A)")
     plt.legend()
     plt.grid(True)
-    plt.xlim([0, 1.2])
     iv_temp_path = os.path.join(app.config['UPLOAD_FOLDER'], "iv_temp_graph.png")
     plt.savefig(iv_temp_path)
     graph_paths.append(iv_temp_path)
@@ -68,7 +67,6 @@ def generate_graphs():
     plt.ylabel("Potência (W)")
     plt.legend()
     plt.grid(True)
-    plt.xlim([0, 1.2])
     pv_temp_path = os.path.join(app.config['UPLOAD_FOLDER'], "pv_temp_graph.png")
     plt.savefig(pv_temp_path)
     graph_paths.append(pv_temp_path)
@@ -84,7 +82,6 @@ def generate_graphs():
     plt.ylabel("Corrente (A)")
     plt.legend()
     plt.grid(True)
-    plt.xlim([0, 1.2])
     iv_irra_path = os.path.join(app.config['UPLOAD_FOLDER'], "iv_irra_graph.png")
     plt.savefig(iv_irra_path)
     graph_paths.append(iv_irra_path)
@@ -101,7 +98,6 @@ def generate_graphs():
     plt.ylabel("Potência (W)")
     plt.legend()
     plt.grid(True)
-    plt.xlim([0, 1.2])
     pv_irra_path = os.path.join(app.config['UPLOAD_FOLDER'], "pv_irra_graph.png")
     plt.savefig(pv_irra_path)
     graph_paths.append(pv_irra_path)
