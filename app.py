@@ -36,25 +36,21 @@ def index():
 def generate_graphs():
     Icc = float(request.form['icc'])
     Kt = float(request.form['kt'])
-    V_values = np.linspace(0, 1, 100)
+    V_values = np.linspace(0, 0.8, 100)
 
     # Lista para armazenar os caminhos dos gráficos gerados
     graph_paths = []
 
     # I-V variando a temperatura
     plt.figure()
-    all_I_values = []
     for Temp in T_var:
         I_values = [corrente_fotovoltaica(V, Icc, Kt, G, G_ref, Temp, Tc) for V in V_values]
-        all_I_values.extend(I_values)
         plt.plot(V_values, I_values, label=f'T = {Temp-273.15:.0f} °C')
     plt.title("Curvas I-V variando a temperatura")
     plt.xlabel("Tensão (V)")
     plt.ylabel("Corrente (A)")
     plt.legend()
     plt.grid(True)
-    plt.xlim([min(V_values), max(V_values)])
-    plt.ylim([min(all_I_values), max(all_I_values)])
     iv_temp_path = os.path.join(app.config['UPLOAD_FOLDER'], "iv_temp_graph.png")
     plt.savefig(iv_temp_path)
     graph_paths.append(iv_temp_path)
@@ -62,19 +58,15 @@ def generate_graphs():
 
     # P-V variando a temperatura
     plt.figure()
-    all_P_values = []
     for Temp in T_var:
         I_values = [corrente_fotovoltaica(V, Icc, Kt, G, G_ref, Temp, Tc) for V in V_values]
         P_values = V_values * I_values
-        all_P_values.extend(P_values)
         plt.plot(V_values, P_values, label=f'T = {Temp-273.15:.0f} °C')
     plt.title("Curvas P-V variando a temperatura")
     plt.xlabel("Tensão (V)")
     plt.ylabel("Potência (W)")
     plt.legend()
     plt.grid(True)
-    plt.xlim([min(V_values), max(V_values)])
-    plt.ylim([min(all_P_values), max(all_P_values)])
     pv_temp_path = os.path.join(app.config['UPLOAD_FOLDER'], "pv_temp_graph.png")
     plt.savefig(pv_temp_path)
     graph_paths.append(pv_temp_path)
@@ -82,18 +74,14 @@ def generate_graphs():
 
     # I-V variando a irradiação
     plt.figure()
-    all_I_values = []
     for Irra in G_var:
         I_values = [corrente_fotovoltaica(V, Icc, Kt, Irra, G_ref, Tc, Tc) for V in V_values]
-        all_I_values.extend(I_values)
         plt.plot(V_values, I_values, label=f'G = {Irra:.0f} W/m²')
     plt.title("Curvas I-V variando a irradiação")
     plt.xlabel("Tensão (V)")
     plt.ylabel("Corrente (A)")
     plt.legend()
     plt.grid(True)
-    plt.xlim([min(V_values), max(V_values)])
-    plt.ylim([min(all_I_values), max(all_I_values)])
     iv_irra_path = os.path.join(app.config['UPLOAD_FOLDER'], "iv_irra_graph.png")
     plt.savefig(iv_irra_path)
     graph_paths.append(iv_irra_path)
@@ -101,19 +89,15 @@ def generate_graphs():
 
     # P-V variando a irradiação
     plt.figure()
-    all_P_values = []
     for Irra in G_var:
         I_values = [corrente_fotovoltaica(V, Icc, Kt, Irra, G_ref, Tc, Tc) for V in V_values]
         P_values = V_values * I_values
-        all_P_values.extend(P_values)
         plt.plot(V_values, P_values, label=f'G = {Irra:.0f} W/m²')
     plt.title("Curvas P-V variando a irradiação")
     plt.xlabel("Tensão (V)")
     plt.ylabel("Potência (W)")
     plt.legend()
     plt.grid(True)
-    plt.xlim([min(V_values), max(V_values)])
-    plt.ylim([min(all_P_values), max(all_P_values)])
     pv_irra_path = os.path.join(app.config['UPLOAD_FOLDER'], "pv_irra_graph.png")
     plt.savefig(pv_irra_path)
     graph_paths.append(pv_irra_path)
