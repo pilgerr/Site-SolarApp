@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, jsonify
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -103,7 +103,7 @@ def generate_graphs():
     graph_paths.append(pv_irra_path)
     plt.close()
 
-    return render_template('index.html', graph_paths=graph_paths)
+    return jsonify(graph_paths)
 
 @app.route('/static/graphs/<filename>')
 def send_graph(filename):
